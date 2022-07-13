@@ -3,10 +3,13 @@ library("dplyr")
 library("zoo")
 library("pomp")
 
+source("functions/d_measure.R")
+source("functions/r_process.R")
 
-run_pfilter <- function(rprocess_config, dmeasure_config, data, Np= 300, verbose = FALSE){
+
+run_pfilter <- function(rprocess_config, dmeasure_config, data, Np= 300, verbose = FALSE, x_init = 1){
   Np = Np
-  init_vals = c(sigma1 = 0.2, x0=1.5)
+  init_vals = c(sigma1 = 0.3, x0=x_init)
   
   pf <- pfilter(
     Np= Np,
