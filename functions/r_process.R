@@ -13,7 +13,7 @@ tran_normal_unconst <- discrete_time(
 
 tran_normal_const <- discrete_time(
   function(x, sigma1, ...){
-    xnext <- rtruncnorm(1, a = 0, b = 2, mean = x, sd = 0.3)
+    xnext <- rtruncnorm(1, a = 0, b = 2, mean = x, sd = sigma1)
     c(x = xnext)
   },
   delta.t = 1
@@ -31,8 +31,8 @@ tran_normal_epifilter <- discrete_time(
 ### 2. R_t follows a lognormal distribution
 
 tran_lognormal <- discrete_time(
-  function(x, sigma1, ...){
-    xnext <- rlnorm(1, meanlog = log(x), sdlog = 0.02)
+  function(x, sdlog, ...){
+    xnext <- rlnorm(1, meanlog = log(x), sdlog = sdlog)
     c(x = xnext)
   },
   delta.t = 1

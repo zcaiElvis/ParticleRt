@@ -1,11 +1,9 @@
 
 
+### Take in full length of y and w, return sum(y[(n-1):1]*w(1:(n-1)))
 
-get_renewal <- function(y){
+get_renewal <- function(y, w){
   size <- length(y)
-  w <- disc_gamma(1:size, 2, 2)
   renew <- sum(y[(size-1):1]*w[1:(size-1)])
   return(renew)
 }
-
-get_renewal(covid$y[1:10])

@@ -7,9 +7,15 @@ source("functions/d_measure.R")
 source("functions/r_process.R")
 
 
-run_pfilter <- function(rprocess_config, dmeasure_config, data, Np= 300, verbose = FALSE, x_init = 1){
+run_pfilter <- function(rprocess_config, dmeasure_config, 
+                        data, Np= 300,
+                        x_init = 1,
+                        sigma1 = 1, sigma2 = 2,
+                        sdlog = 0.02,
+                        shape = 2, scale = 2,
+                        verbose = FALSE){
   Np = Np
-  init_vals = c(sigma1 = 0.3, x0=x_init)
+  init_vals = c(sigma1 = sigma1, sigma2 = sigma2, sdlog = sdlog, x0=x_init, shape = shape, scale = scale)
   
   pf <- pfilter(
     Np= Np,

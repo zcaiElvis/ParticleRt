@@ -34,12 +34,32 @@ plot(epifilter_result$pred.mean.x)
 
 ### Log normal ###
 lnormal_filter <- run_pfilter(rprocess_config = tran_lognormal, dmeasure_config = meas_pois, 
-                              data=covid, Np=300, x_init = 1, verbose= FALSE)
-
+                              data=covid, Np=100, x_init = 1, verbose= FALSE)
 lnormal_result <- as.data.frame(lnormal_filter)
 logLik(lnormal_filter)
 plot(lnormal_result$pred.mean.x)
-plot(lnormal_result$filter.mean.x)
-plot(lnormal_result$ess)
 
-logLik(lnormal_filter)
+
+### Simulated normal random walk ###
+sim_rw <- gen_normal_rw(500)
+sim_x <- sim_rw$x
+sim_rw <- data.frame(idx = 1:nrow(sim_rw), y = sim_rw$y)
+
+normal_sim <- run_pfilter(rprocess_config = tran_normal_unconst, dmeasure_config = meas_norm, data = sim_rw, Np=1000)
+normal_sim_result <- as.data.frame(normal_sim)
+plot(normal_sim_result$pred.mean.x)
+
+plot(sim_x, normal_sim_result$pred.mean.x)
+
+
+
+
+### Simulated covid ###
+sim_covid <- gen_lnormal_pois_rw(size = 1000, sd_log = 0.02, init_x = 1, g_shape = 2, g_scale = 2)
+plot(sim_covid$y)
+sim_covid_x <- sim_covid$x
+sim_covid <- data.frame(idx = sim_covid$idx, y = sim_covid$y)
+
+covid_sim <- run_pfilter(rprocess_config = tran_lognormal, dmeasure_config = meas_pois_lnorm, data = sim_covid, Np=1000)
+covid_sim_result <- as.data.frame(covid_sim)
+
