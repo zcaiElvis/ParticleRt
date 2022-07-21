@@ -6,6 +6,7 @@ source("constants/file_loc.R")
 source("functions/disc_gamma.R")
 source("functions/get_renewal.R")
 source("scripts/read_data.R")
+source("functions/pred_case.R")
 
 covid <- read_owid(covid_file_loc)
 
@@ -24,3 +25,14 @@ test_that("Renewal equation gives the correct answer",{
   cal_output <- sum(covid$y[49:1]*w[1:49] )
   expect_equal(fun_output, cal_output)
 })
+
+
+### Testing prediction function
+# test_that("Predict function gives the right answer",{
+#   test_rt <- c(1.2,1.5,1.7,1.9)
+#   test_y <- c(1,2,2,2)
+#   
+#   lambda <- get_lambda(test_y, shape = 1, scale = 1)
+#   
+#   
+# })

@@ -1,0 +1,13 @@
+
+  model {  
+
+  # Modeling
+  rt[1] ~ dnorm(1, 10)
+  y[1] ~ dpois(rt[1])
+  
+  for (t in 2:N) {
+    rt[t] ~ dnorm(rt[t-1], 1/(0.1*sqrt(rt[t-1])))
+    lambda[t] <- sum(y[1:(t-1)]*(w[1:(t-1)]/sum(w[1:(t-1)])))
+    y[t] ~ dpois(rt[t]*lambda[t])
+  }
+}  
