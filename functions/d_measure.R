@@ -22,10 +22,11 @@ meas_pois_lnorm <- function(t, x, T, Y, y, g_shape, g_scale, ..., log){
 }
 
 
-# meas_norm <- function(t,x,T,Y,y,...,log){
-#   dnorm(y, x, 0.2)
-# }
-# 
-# meas_pois <- function(t,x,T,Y,y,...,log){
-#   dpois(round(y), lambda=x)
-# }
+meas_pois_interval <- function(t, x, T, Y, y, g_shape, g_scale, ..., log){
+  if(t > 1){
+    lambda = x * sum(Y[(t-1):1] * disc_gamma(1:(t-1), shape = g_shape, scale = g_scale))
+    sum(dpois(round(0.98*y):round(1.02*y), lambda = lambda))
+  }else{
+    dpois(round(y), lambda = 1)
+  }
+}

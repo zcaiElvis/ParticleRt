@@ -1,0 +1,63 @@
+---
+title: "July_26"
+output: pdf_document
+date: '2022-07-26'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("dplyr")
+library("zoo")
+library("pomp")
+setwd("~/Desktop/School/research/pf_mobility")
+```
+
+
+```{r}
+source("scripts/read_data.R")
+source("constants/file_loc.R")
+source("constants/serial_interval.R")
+
+source("functions/d_measure.R")
+source("functions/r_process.R")
+source("functions/priors.R")
+source("functions/disc_gamma.R")
+source("functions/run_pfilter.R")
+source("functions/simulate_data.R")
+source("functions/get_renewal.R")
+source("functions/get_true_rt.R")
+source("functions/pred_case.R")
+
+```
+
+```{r}
+ca <- read_owid_mob(covid_file_loc)
+ca <- data.frame(idx = ca$idx, y = ca$y)
+```
+
+
+```{r}
+ca_filter <-run_pfilter(rprocess_config = tran_lognormal, dmeasure_config = meas_pois_interval, data = ca,
+                        Np = 500, sdlog=0.1, shape = nz_shape, scale = nz_scale, x_init= 1) 
+```
+
+```{r}
+plot(ca_filter)
+```
+
+```{r}
+ca_result <- as.data.frame(ca_filter)
+```
+
+
+```{r}
+plot(ca_result$pred.mean.x)
+```
+
+```{r}
+plot(ca_result$pred.mean.x)
+abline(v=c(60, 320, 450,580, 710, 810), col = c("black","purple","blue", "red", "green", "cyan"))
+plot(ca$y)
+abline(v=c(60, 320, 450,580, 710, 810), col = c("black","purple","blue", "red", "green", "cyan"))
+```
